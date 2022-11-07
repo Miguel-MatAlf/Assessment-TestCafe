@@ -1,0 +1,2 @@
+To run any test, specify the test you want to run, i.e.
+ C:\..\Assesment-TestCafe> testcafe chrome Tests/Test1.js
