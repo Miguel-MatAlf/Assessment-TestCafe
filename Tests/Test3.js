@@ -1,4 +1,5 @@
 import home from '../Pages/homePage';
+import CF from '../Pages/commonFunctions';
 
 fixture `Renaming first device`
     .page `http://localhost:3001/`;
@@ -7,21 +8,17 @@ test('Test 3', async t => {
 	//Make an API call that renames the first device of the list to “Rename Device”
 	const update = "Rename Device";
 	
-	//Make an API call to retrieve the list of devices.
-	const response = await t.request(`http://localhost:3000/devices`);
+	//Make an API call to retrieve the list of devices
+	const response = await CF.listDevicesAPI(t);
 	await t.expect(response.status).eql(200);
 	
 	//Retrieve values from API call
-	const getId = getValueOf(response, "id");
-	const getType = getValueOf(response, "type");
-	const getCapc = getValueOf(response, "hdd_capacity");
+	const getId = CF.getValueOf(response, "id");
+	const getType = CF.getValueOf(response, "type");
+	const getCapc = CF.getValueOf(response, "hdd_capacity");
 	
 	//Rename the first element
-	const putResponse = await t.request({
-		url: `http://localhost:3000/devices/${getId[0]}`,
-		method: "put",
-		body: {system_name: `${update}`, type: `${getType[0]}`, hdd_capacity: `${getCapc[0]}`}
-	});
+	const putResponse = await CF.putDevice(t, getId[0], update, getType[0], getCapc[0]);
 	await t.expect(putResponse.status).eql(200);
 	
 	//Reload the page and verify the modified device has the new name
@@ -30,12 +27,3 @@ test('Test 3', async t => {
 	await t.expect(actual).eql(update);
 	
 });
-
-//Read the results of attirbute desired and store it in an array
-function getValueOf(result, attribute) {
-	const array = [];
-	for (let i = 0; i < result.body.length; i++){
-		array[i] = result.body[i][attribute];
-	}
-	return array;
-}

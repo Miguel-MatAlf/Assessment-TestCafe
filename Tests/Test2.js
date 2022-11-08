@@ -1,8 +1,9 @@
 //import files that contains elements located
 import home from '../Pages/homePage';
 import addDevice from '../Pages/addDevicePage';
+import CF from '../Pages/commonFunctions';
 
-fixture `Adding devices using UI`
+fixture `Adding device using UI`
 	.page `http://localhost:3001/`;
 
 test('Test 2', async t => {
@@ -22,9 +23,9 @@ test('Test 2', async t => {
 		
 	//Verify device was added successfully
 	//Retrieve text from UI
-	const devicesName = await getText(home.devices, ".device-name");
-	const devicesType = await getText(home.devices, ".device-type");
-	const devicesCapacity = getNumbers(await getText(home.devices, ".device-capacity"));
+	const devicesName = await CF.getText(home.devices, ".device-name");
+	const devicesType = await CF.getText(home.devices, ".device-type");
+	const devicesCapacity = CF.getNumbers(await CF.getText(home.devices, ".device-capacity"));
 	
 	//Verify the device added is displayed in UI
 	await t
@@ -32,22 +33,3 @@ test('Test 2', async t => {
 		.expect(devicesType).contains(type)
 		.expect(devicesCapacity).contains(capac);
 });
-
-//Function to getText from table in UI
-async function getText(elem, attribute) {
-	const array = [];
-	for(let  i = 0; i < await elem.count; i++) {
-		array[i] = await elem.find(attribute).nth(i).innerText;
-	}
-	return array;
-}
-
-//Function to only get the number. Example: you have "10 GB", this function will return "10"
-function getNumbers(array) {
-	const newArray = [];
-	for(let i = 0; i < array.length; i++) {
-		const myArray = array[i].split(" ");
-		newArray[i] = myArray[0];
-	}
-	return newArray;
-}
