@@ -1,13 +1,28 @@
 import { Selector } from 'testcafe';
+import data from '../Resources/data';
+import home from '../Pages/homePage';
 
-class AddDevice {
+let addDevPage = data.pageElements.addDevicePage;
+
+class AddDeviceP {
     constructor () {
 		//mapping elements from Add Device page
-		this.inputSystemName = Selector('#system_name');
-		this.dropdownType = Selector('#type');
-		this.inputCapacity = Selector('#hdd_capacity');
-		this.saveButton = Selector('.submitButton');
+		this.inputSystemName = Selector(addDevPage.inputSystemName);
+		this.dropdownType = Selector(addDevPage.dropdownType);
+		this.inputCapacity = Selector(addDevPage.inputCapacity);
+		this.saveButton = Selector(addDevPage.saveButton);
     }
+	
+	async addDevice (t, name, type, capac) {
+		let AD = new AddDeviceP();
+		await t
+			.click(home.addDeviceButton)
+			.typeText(AD.inputSystemName, name, {replace: true})
+			.click(AD.dropdownType)
+			.click(AD.dropdownType.find('option').withText(type))
+			.typeText(AD.inputCapacity, capac, {replace: true})
+			.click(AD.saveButton);
+	}
 }
 
-export default new AddDevice();
+export default new AddDeviceP();

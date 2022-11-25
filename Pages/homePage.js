@@ -1,12 +1,16 @@
 import { Selector } from 'testcafe';
+import data from '../Resources/data';
+
+let homePag = data.pageElements.homePage;
 
 class Home {
     constructor () {
 		//mapping elements from home page
-		this.deviceType = Selector('#device_type');
-		this.sortBy = Selector('#sort_by');
-		this.addDeviceButton = Selector('.submitButton');
-		this.devices = Selector('.device-main-box');
+		this.ninjaLogo = Selector(homePag.ninjaLogo);
+		this.deviceType = Selector(homePag.deviceType);
+		this.sortBy = Selector(homePag.sortBy);
+		this.addDeviceButton = Selector(homePag.addDeviceButton);
+		this.devices = Selector(homePag.devices);
     }
 }
 
