@@ -30,8 +30,8 @@ test('Test 1: Verify that all devices contain the edit and delete buttons', asyn
 	const devicesCapacity = CF.getNumbers(await CF.getText(home.devices, ".device-capacity"));
 	
 	//Checking the name, type and capacity of each element of the list
-    await t
-        .expect(getSystemName.sort()).eql(devicesName.sort())
+	await t
+		.expect(getSystemName.sort()).eql(devicesName.sort())
 		.expect(getType.sort()).eql(devicesType.sort())
 		.expect(getCapacity.sort()).eql(devicesCapacity.sort());
 		
