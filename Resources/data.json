@@ -1,0 +1,21 @@
+{
+  "app" : {
+    "URL" : "http://localhost:3001",
+    "endPoint" : "http://localhost:3000/devices"
+  },
+  "pageElements" : {
+    "homePage" : {
+		"ninjaLogo" : ".ninja-logo-container",
+		"deviceType" : "#device_type",
+		"sortBy" : "#sort_by",
+		"addDeviceButton" : ".submitButton",
+		"devices" : ".device-main-box"
+    },
+    "addDevicePage" : {
+		"inputSystemName" : "#system_name",
+		"dropdownType" : "#type",
+		"inputCapacity" : "#hdd_capacity",
+		"saveButton" : ".submitButton"
+    }
+  }
+}
