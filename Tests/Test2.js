@@ -1,10 +1,11 @@
 //import files that contains elements located
 import home from '../Pages/homePage';
-import addDevice from '../Pages/addDevicePage';
-import CF from '../Pages/commonFunctions';
+import addPage from '../Pages/addDevicePage';
+import CF from '../Resources/commonFunctions';
+import API from '../Resources/apiFunctions';
 
 fixture `Adding device using UI`
-	.page `http://localhost:3001/`;
+	.page `${API.getURL()}`;
 
 test('Test 2', async t => {
 	//Verify that devices can be created properly using the UI
@@ -13,13 +14,7 @@ test('Test 2', async t => {
 	const capac = '512';
 	
 	//Adding device through UI
-	await t
-		.click(home.addDeviceButton)
-		.typeText(addDevice.inputSystemName, name, {replace: true})
-		.click(addDevice.dropdownType)
-		.click(addDevice.dropdownType.find('option').withText(type))
-		.typeText(addDevice.inputCapacity, capac, {replace: true})
-		.click(addDevice.saveButton);
+	await addPage.addDevice(t, name, type, capac);
 		
 	//Verify device was added successfully
 	//Retrieve text from UI
