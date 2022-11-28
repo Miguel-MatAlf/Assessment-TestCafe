@@ -9,7 +9,12 @@
 		"deviceType" : "#device_type",
 		"sortBy" : "#sort_by",
 		"addDeviceButton" : ".submitButton",
-		"devices" : ".device-main-box"
+		"devices" : ".device-main-box",
+		"devicesName" : ".device-name",
+		"devicesType" : ".device-type",
+		"devicesCapacity" : ".device-capacity",
+		"editButtons" : ".device-edit",
+		"removeButtons" : ".device-remove"
     },
     "addDevicePage" : {
 		"inputSystemName" : "#system_name",
@@ -17,5 +22,11 @@
 		"inputCapacity" : "#hdd_capacity",
 		"saveButton" : ".submitButton"
     }
+  },
+  "attributes" : {
+	  "id" : "id",
+	  "systemName" : "system_name",
+	  "type" : "type",
+	  "capacity" : "hdd_capacity"
   }
 }
