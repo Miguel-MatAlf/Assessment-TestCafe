@@ -13,14 +13,15 @@ class AddDeviceP {
 		this.saveButton = Selector(addDevPage.saveButton);
     }
 	
-	async addDevice (t, name, type, capac) {
+	//function to add a device
+	async addDevice (t, name, type, capacity) {
 		let AD = new AddDeviceP();
 		await t
 			.click(home.addDeviceButton)
 			.typeText(AD.inputSystemName, name, {replace: true})
 			.click(AD.dropdownType)
 			.click(AD.dropdownType.find('option').withText(type))
-			.typeText(AD.inputCapacity, capac, {replace: true})
+			.typeText(AD.inputCapacity, capacity, {replace: true})
 			.click(AD.saveButton);
 	}
 }
