@@ -3,8 +3,11 @@ import home from '../Pages/homePage';
 import addPage from '../Pages/addDevicePage';
 import CF from '../Resources/commonFunctions';
 import API from '../Resources/apiFunctions';
+import data from '../Resources/data';
 
 let response = {};
+const HP = data.pageElements.homePage;
+const Att = data.attributes;
 
 fixture `Assessment Automation`
 	.page `${API.getURL()}`
@@ -20,14 +23,14 @@ fixture `Assessment Automation`
 
 test('Test 1: Verify that all devices contain the edit and delete buttons', async t => {
 	//Retrieve values from API call
-	const getSystemName = CF.getValueOf(response, "system_name");
-	const getType = CF.getValueOf(response, "type");
-	const getCapacity = CF.getValueOf(response, "hdd_capacity");
+	const getSystemName = CF.getValueOf(response, Att.systemName);
+	const getType = CF.getValueOf(response, Att.type);
+	const getCapacity = CF.getValueOf(response, Att.capacity);
 	
 	//Retrieve text from UI
-	const devicesName = await CF.getText(home.devices, ".device-name");
-	const devicesType = await CF.getText(home.devices, ".device-type");
-	const devicesCapacity = CF.getNumbers(await CF.getText(home.devices, ".device-capacity"));
+	const devicesName = await CF.getText(home.devices, HP.devicesName);
+	const devicesType = await CF.getText(home.devices, HP.devicesType);
+	const devicesCapacity = CF.getNumbers(await CF.getText(home.devices, HP.devicesCapacity));
 	
 	//Checking the name, type and capacity of each element of the list
 	await t
@@ -38,8 +41,8 @@ test('Test 1: Verify that all devices contain the edit and delete buttons', asyn
 	//Verify that all devices contain the edit and delete buttons
 	for (let i = 0; i < await home.devices.count; i++) {
 		await t
-			.expect(home.devices.find(".device-edit").nth(i).visible).ok()
-			.expect(home.devices.find(".device-remove").nth(i).visible).ok();
+			.expect(home.devices.find(HP.editButtons).nth(i).visible).ok()
+			.expect(home.devices.find(HP.removeButtons).nth(i).visible).ok();
 	}
 });
 
@@ -53,9 +56,9 @@ test('Test 2: Verify that devices can be created properly using the UI', async t
 		
 	//Verify device was added successfully
 	//Retrieve text from UI
-	const devicesName = await CF.getText(home.devices, ".device-name");
-	const devicesType = await CF.getText(home.devices, ".device-type");
-	const devicesCapacity = CF.getNumbers(await CF.getText(home.devices, ".device-capacity"));
+	const devicesName = await CF.getText(home.devices, HP.devicesName);
+	const devicesType = await CF.getText(home.devices, HP.devicesType);
+	const devicesCapacity = CF.getNumbers(await CF.getText(home.devices, HP.devicesCapacity));
 	
 	//Verify the device added is displayed in UI
 	await t
@@ -68,9 +71,9 @@ test('Test 3: Make an API call that renames the first device of the list to \“
 	const update = "Rename Device";
 	
 	//Retrieve values from API call
-	const getId = CF.getValueOf(response, "id");
-	const getType = CF.getValueOf(response, "type");
-	const getCapc = CF.getValueOf(response, "hdd_capacity");
+	const getId = CF.getValueOf(response, Att.id);
+	const getType = CF.getValueOf(response, Att.type);
+	const getCapc = CF.getValueOf(response, Att.capacity);
 	
 	//Rename the first element
 	const putResponse = await API.putMethod(t, getId[0], update, getType[0], getCapc[0]);
@@ -78,15 +81,15 @@ test('Test 3: Make an API call that renames the first device of the list to \“
 	
 	//Reload the page and verify the modified device has the new name
 	await t.eval(() => location.reload(true));
-	const actual = home.devices.find(".device-name").nth(0).innerText;
+	const actual = home.devices.find(HP.devicesName).nth(0).innerText;
 	await t.expect(actual).eql(update);
 	
 });
 
 test('Test 4: Make an API call that deletes the last element of the list', async t => {
 	//Retrieve values from API call
-	const getSystemName = CF.getValueOf(response, "system_name");
-	const getId = CF.getValueOf(response, "id");
+	const getSystemName = CF.getValueOf(response, Att.systemName);
+	const getId = CF.getValueOf(response, Att.id);
 	
 	//Delete the last element
 	const last = response.body.length - 1;
@@ -95,7 +98,7 @@ test('Test 4: Make an API call that deletes the last element of the list', async
 	
 	//Reload the page and verify the element is no longer visible and it doesn’t exist in the DOM
 	await t.eval(() => location.reload(true));
-	const actual = await home.devices.find(".device-name").withText(getSystemName[last]);
+	const actual = await home.devices.find(HP.devicesName).withText(getSystemName[last]);
 	await t.expect(await actual.exists).notOk();
 	
 });
